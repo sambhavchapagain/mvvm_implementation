@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:providers_app/utils/routes/routes_name.dart';
+import 'package:providers_app/utils/utils.dart';
 import 'package:providers_app/view/home_screen.dart';
 
 
@@ -17,8 +18,8 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: Center(
         child: InkWell(onTap: (){
-          Navigator.pushNamed(context, RoutesName.home);
-          // Navigator.push(context,MaterialPageRoute(builder: (context) =>HomeScreen()));
+          Utils.flushBarErrorMessage('no internet connection', context);
+          // Utils.ToastMessage('click me');
         },
           child: Text('click'),
 
