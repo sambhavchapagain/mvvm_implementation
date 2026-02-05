@@ -1,34 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:providers_app/respository/components/round_button.dart';
-import 'package:providers_app/utils/routes/routes_name.dart';
-import 'package:providers_app/utils/utils.dart';
-import 'package:providers_app/view/home_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:providers_app/view_model/auth_view_model.dart';
+import 'package:providers_app/utils/routes/routes_name.dart';
+import '../respository/components/round_button.dart';
+import '../utils/utils.dart';
+import '../view_model/auth_view_model.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+
+
+class SignupView extends StatefulWidget {
+  const SignupView({super.key});
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  State<SignupView> createState() => _SignupViewState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-
+class _SignupViewState extends State<SignupView> {
   ValueNotifier<bool> _obsecurePassword = ValueNotifier<bool>(true);
   TextEditingController _emailController = TextEditingController();
-   TextEditingController _passwordController = TextEditingController();
-   FocusNode emailFocusNode = FocusNode();
-   FocusNode passwordFocusNode = FocusNode();
+  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _phoneNumberCOntroller = TextEditingController();
+  TextEditingController _fullnameController = TextEditingController();
+  FocusNode emailFocusNode = FocusNode();
+  FocusNode passwordFocusNode = FocusNode();
+  FocusNode fullNameFocusNode = FocusNode();
+  FocusNode phoneNumberFocusNode = FocusNode();
 
-      // dynamic response = await _apiSerivices.getPostApiResponse(AppUrl.loginUrl, data);
-      // return response;
+
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _fullnameController.dispose();
+    _phoneNumberCOntroller.dispose();
     emailFocusNode.dispose();
     passwordFocusNode.dispose();
+    fullNameFocusNode.dispose();
+    phoneNumberFocusNode.dispose();
     _obsecurePassword.dispose();
     super.dispose();
   }
@@ -40,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
+        title: const Text('Sign Up'),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -50,12 +57,38 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
 
             TextFormField(
+              controller: _fullnameController,
+
+              keyboardType: TextInputType.text,
+              decoration: const InputDecoration(
+                hintText: 'Fullname',
+                labelText: 'Name',
+                prefixIcon: Icon(Icons.alternate_email),
+              ),
+              onFieldSubmitted: (value) {
+                Utils.fieldFocusChange(
+                    context, emailFocusNode, passwordFocusNode);
+              },
+            ),   TextFormField(
               controller: _emailController,
-              focusNode: emailFocusNode,
+              
               keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
                 hintText: 'Email@gmail.com',
                 labelText: 'Email',
+                prefixIcon: Icon(Icons.alternate_email),
+              ),
+              onFieldSubmitted: (value) {
+                Utils.fieldFocusChange(
+                    context, emailFocusNode, passwordFocusNode);
+              },
+            ),   TextFormField(
+              controller: _phoneNumberCOntroller,
+
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                hintText: 'Number',
+                labelText: 'Number',
                 prefixIcon: Icon(Icons.alternate_email),
               ),
               onFieldSubmitted: (value) {
@@ -94,8 +127,8 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(height: height * .085),
 
             RoundButton(
-              title: 'login',
-              loading: authViewMode.loading,
+              title: 'Sign Up',
+              loading: authViewMode.signUpLoading,
               onPress: () {
                 if (_emailController.text.isEmpty) {
                   Utils.flushBarErrorMessage(
@@ -107,25 +140,27 @@ class _LoginScreenState extends State<LoginScreen> {
                   Utils.flushBarErrorMessage(
                       'please enter 6 digits password', context);
                 } else {
-                  var data ={
-                    'email' : _emailController.text.toString(),
-                    'password' : _passwordController.text.toString(),
+                  Map data ={
+                    "email":_emailController.text,
+                    "password": _passwordController.text,
+                    "full_name": _fullnameController.text,
+                    "phone_number": _phoneNumberCOntroller.text
                   };
 
-                  authViewMode.loginApi(data, context);
+                  authViewMode.signUpApi(data, context);
                   print('api hit');
                 }
               },
             ),
             SizedBox(height: height * .02,),
-            InkWell(
-              onTap: (){
-                Navigator.pushNamed(context, RoutesName.signup);
-              },
-                child: Text("donot have an account ? Sign up"))
+            InkWell(onTap: (){
+              Navigator.pushNamed(context, RoutesName.login);
+            }   ,
+                child: Text("Already have an account ? Login"))
           ],
         ),
       ),
     );
   }
 }
+

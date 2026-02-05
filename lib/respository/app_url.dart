@@ -1,8 +1,8 @@
 class AppUrl {
 
 
-  static var baseUlr = 'https://reqres.in';
-  static var loginUrl = baseUlr + '/api/login';
-  static var registerApiEndPoint = baseUlr + '/api/register';
+  static var baseUlr = 'http://192.168.18.44:8080';
+  static var loginUrl = baseUlr + '/auth/login';
+  static var registerApiEndPoint = baseUlr + '/auth/register';
 
 }

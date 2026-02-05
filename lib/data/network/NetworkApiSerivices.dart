@@ -28,9 +28,14 @@ class NetworkApiSerivice extends BaseApiSerivices{
 
     try {
       Response response = await post(
-        Uri.parse(url),
-        body: data
-      ).timeout(Duration(seconds: 10));
+
+
+      Uri.parse(url),
+      headers: {
+      'Content-Type': 'application/json',
+      },
+      body: jsonEncode(data),
+      ).timeout(const Duration(seconds: 10));
       responseJson = retunResponse(response);
     }
 

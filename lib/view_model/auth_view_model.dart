@@ -9,19 +9,49 @@ class
   final _myRepo = AuthRepository();
   bool _loading = false;
   bool get loading => _loading;
+  bool _signUpLoading = false;
+  bool get signUpLoading => _signUpLoading;
 
   setLoaing(bool value){
     _loading = value;
     notifyListeners();
   }
-  Future<void> loginApi(dynamic data, BuildContext context) async{
-    setLoaing(true);
+  setSignUpLoading(bool value){
+    _signUpLoading = value;
+    notifyListeners();
+  }
+  Future<void> loginApi(dynamic data, BuildContext context)async{
+    setSignUpLoading((true));
 
 
     _myRepo.loginApi(data).then((value){
-      setLoaing(false);
-      Utils.flushBarErrorMessage('login sucessfully ', context);
+      setSignUpLoading(false);
+      Utils.flushBarErrorMessage('login sucessfully ',context);
       Navigator.pushNamed(context, RoutesName.home);
+
+      if(kDebugMode){
+        print(value.toString());
+
+      }
+    }).onError((error, stackTrace){
+      setSignUpLoading(false);
+
+      if(kDebugMode){
+         Utils.flushBarErrorMessage(error.toString(), context);
+        print(error.toString());
+
+      }
+    });
+  }
+
+  Future<void> signUpApi(dynamic data, BuildContext context) async{
+    setLoaing(true);
+
+
+    _myRepo.signUpApi(data).then((value){
+      setLoaing(false);
+      Utils.flushBarErrorMessage('SignUp sucessfully ',context);
+      Navigator.pushNamed(context,RoutesName.home);
 
       if(kDebugMode){
         print(value.toString());
@@ -31,10 +61,11 @@ class
       setLoaing(false);
 
       if(kDebugMode){
-         Utils.flushBarErrorMessage(error.toString(), context);
+        Utils.flushBarErrorMessage(error.toString(), context);
         print(error.toString());
 
       }
     });
   }
+
 }

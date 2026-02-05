@@ -7,25 +7,25 @@ import 'package:providers_app/respository/app_url.dart';
 
 class
     AuthRepository {
-  BaseApiSerivices _apiSerivices=NetworkApiSerivice();
+  final BaseApiSerivices _apiServices=NetworkApiSerivice();
   Future<dynamic>loginApi(dynamic data)async{
     try{
 
-      dynamic response = await _apiSerivices.getPostApiResponse(AppUrl.loginUrl, data);
+      dynamic response = await _apiServices.getPostApiResponse(AppUrl.loginUrl, data);
       return response;
 
     }catch(e){
-      throw e;
+      rethrow;
     }
-  } Future<dynamic>registerApi(dynamic data)async{
+  } Future<dynamic>signUpApi(dynamic data)async{
     try{
 
-      dynamic response = await _apiSerivices.getPostApiResponse(AppUrl.registerApiEndPoint, data);
+      dynamic response = await _apiServices.getPostApiResponse(AppUrl.registerApiEndPoint, data);
       return response;
 
 
     }catch(e){
-      throw e;
+      rethrow;
     }
   }
 }
